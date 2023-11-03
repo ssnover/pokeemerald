@@ -259,7 +259,13 @@ LittlerootTown_ProfessorBirchsLab_EventScript_ChooseJohtoStarter::
 	applymovement OBJ_EVENT_ID_PLAYER, LittlerootTown_ProfessorBirchsLab_Movement_PlayerEnterLabForJohtoStarter
 	waitmovement 0
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_CompletedDexChoosePokemon, MSGBOX_DEFAULT
-	setvar VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 5
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GiveChikorita
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GiveCyndaquil
+	goto LittlerootTown_ProfessorBirchsLab_EventScript_GiveTotodile
+	setvar VAR_DEX_UPGRADE_JOHTO_STARTER_STATE, 6
+	goto MysteryGiftScript_OldSeaMap
+	goto MysteryGiftScript_MysticTicket
+	goto MysteryGiftScript_AuroraTicket
 	releaseall
 	end
 
@@ -901,8 +907,7 @@ LittlerootTown_ProfessorBirchsLab_Text_CompletedDexChoosePokemon:
 LittlerootTown_ProfessorBirchsLab_Text_CanHaveAnyOneOfRarePokemon:
 	.string "PROF. BIRCH: These are rare POKéMON\n"
 	.string "only found in another region!\p"
-	.string "You can have any one of these\n"
-	.string "three POKéMON!$"
+	.string "You can have these three POKéMON!$"
 
 LittlerootTown_ProfessorBirchsLab_Text_YoullTakeCyndaquil:
 	.string "PROF. BIRCH: The FIRE POKéMON\n"
