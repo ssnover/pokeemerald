@@ -63,6 +63,7 @@ static bool8 ShouldGetStatBadgeBoost(u16 flagId, u8 battlerId);
 static u16 GiveMoveToBoxMon(struct BoxPokemon *boxMon, u16 move);
 static bool8 ShouldSkipFriendshipChange(void);
 static u8 SendMonToPC(struct Pokemon *mon);
+static u8 OverrideGameVersion(u16 species);
 
 EWRAM_DATA static u8 sLearningMoveTableID = 0;
 EWRAM_DATA u8 gPlayerPartyCount = 0;
@@ -87,6 +88,21 @@ static const struct CombinedMove sCombinedMoves[2] =
 {
     {MOVE_EMBER, MOVE_GUST, MOVE_HEAT_WAVE},
     {0xFFFF, 0xFFFF, 0xFFFF}
+};
+
+struct OriginGameOverride {
+    u16 species;
+    u8 overrideOriginGame;
+};
+
+static const struct OriginGameOverride sSpeciesToGameOverride[7] = {
+    { SPECIES_LUNATONE, VERSION_SAPPHIRE },
+    { SPECIES_ZANGOOSE, VERSION_RUBY },
+    { SPECIES_ROSELIA, VERSION_RUBY },
+    { SPECIES_MEDITITE, VERSION_RUBY },
+    { SPECIES_MEDICHAM, VERSION_RUBY },
+    { SPECIES_SURSKIT, VERSION_RUBY },
+    { SPECIES_MASQUERAIN, VERSION_RUBY }
 };
 
 // NOTE: The order of the elements in the 3 arrays below is irrelevant.
@@ -2204,6 +2220,7 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     u8 shinyRolls;
     u8 rollIdx;
     u32 shinyValue;
+    u8 metGame;
 
     shinyRolls = HasAllHoennMons() ? 4 : 2;
 
@@ -2261,7 +2278,8 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     value = GetCurrentRegionMapSectionId();
     SetBoxMonData(boxMon, MON_DATA_MET_LOCATION, &value);
     SetBoxMonData(boxMon, MON_DATA_MET_LEVEL, &level);
-    SetBoxMonData(boxMon, MON_DATA_MET_GAME, &gGameVersion);
+    metGame = OverrideGameVersion(species);
+    SetBoxMonData(boxMon, MON_DATA_MET_GAME, &metGame);
     value = ITEM_POKE_BALL;
     SetBoxMonData(boxMon, MON_DATA_POKEBALL, &value);
     SetBoxMonData(boxMon, MON_DATA_OT_GENDER, &gSaveBlock2Ptr->playerGender);
@@ -4448,6 +4466,19 @@ static u8 SendMonToPC(struct Pokemon *mon)
     } while (boxNo != StorageGetCurrentBox());
 
     return MON_CANT_GIVE;
+}
+
+u8 OverrideGameVersion(u16 species) {
+    u8 tableIdx;
+    u8 gameOverride = VERSION_EMERALD;
+
+    for (tableIdx = 0; tableIdx < 7; ++tableIdx) {
+        if (species == sSpeciesToGameOverride[tableIdx].species) {
+            gameOverride = sSpeciesToGameOverride[tableIdx].overrideOriginGame;
+        }
+    }
+
+    return gameOverride;
 }
 
 u8 CalculatePlayerPartyCount(void)
