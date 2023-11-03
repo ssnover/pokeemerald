@@ -202,6 +202,11 @@ LittlerootTown_ProfessorBirchsLab_EventScript_UpgradeToNationalDex::
 	waitfanfare
 	setflag FLAG_SYS_NATIONAL_DEX
 	special EnableNationalPokedex
+	msgbox LittlerootTown_ProfessorBirchsLab_Text_GiveStarterEggs, MSGBOX_DEFAULT
+	closemessage
+	giveegg SPECIES_TREECKO
+	giveegg SPECIES_TORCHIC
+	giveegg SPECIES_MUDKIP
 	msgbox LittlerootTown_ProfessorBirchsLab_Text_GrassyPatchWaiting2, MSGBOX_DEFAULT
 	closemessage
 	setflag FLAG_HIDE_LITTLEROOT_TOWN_BIRCH
@@ -865,6 +870,11 @@ LittlerootTown_ProfessorBirchsLab_Text_OkayAllDone:
 LittlerootTown_ProfessorBirchsLab_Text_PokedexUpgradedToNational:
 	.string "{PLAYER}'s POKéDEX was upgraded\n"
 	.string "to the NATIONAL Mode!$"
+
+LittlerootTown_ProfessorBirchsLab_Text_GiveStarterEggs:
+	.string "PROF. BIRCH: Also, to reward your\n"
+	.string "becoming CHAMPION, have these\l"
+	.string "POKéMON eggs!$"
 
 LittlerootTown_ProfessorBirchsLab_Text_GrassyPatchWaiting2:
 	.string "PROF. BIRCH: But listen.\n"
