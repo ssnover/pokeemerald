@@ -236,7 +236,10 @@ void UpdateRoamerHPStatus(struct Pokemon *mon)
 
 void SetRoamerInactive(void)
 {
-    ROAMER->active = FALSE;
+    bool16 createLatios = (ROAMER->species == SPECIES_LATIAS);
+    ClearRoamerData();
+    ClearRoamerLocationData();
+    CreateInitialRoamerMon(createLatios);
 }
 
 void GetRoamerLocation(u8 *mapGroup, u8 *mapNum)
