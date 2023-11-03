@@ -3464,9 +3464,9 @@
                 "species": "SPECIES_MAGIKARP"
               },
               {
-                "min_level": 5,
-                "max_level": 10,
-                "species": "SPECIES_TENTACOOL"
+                "min_level": 20,
+                "max_level": 25,
+                "species": "SPECIES_FEEBAS"
               },
               {
                 "min_level": 10,
@@ -3474,9 +3474,9 @@
                 "species": "SPECIES_MAGIKARP"
               },
               {
-                "min_level": 10,
-                "max_level": 30,
-                "species": "SPECIES_TENTACOOL"
+                "min_level": 20,
+                "max_level": 25,
+                "species": "SPECIES_FEEBAS"
               },
               {
                 "min_level": 10,
