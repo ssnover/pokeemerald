@@ -2201,37 +2201,49 @@ void CreateBoxMon(struct BoxPokemon *boxMon, u16 species, u8 level, u8 fixedIV, 
     u32 personality;
     u32 value;
     u16 checksum;
+    u8 shinyRolls;
+    u8 rollIdx;
+    u32 shinyValue;
+
+    shinyRolls = HasAllHoennMons() ? 4 : 2;
 
     ZeroBoxMonData(boxMon);
 
-    if (hasFixedPersonality)
-        personality = fixedPersonality;
-    else
-        personality = Random32();
+    for (rollIdx = 0u; rollIdx < shinyRolls; ++rollIdx) {
+        if (hasFixedPersonality)
+            personality = fixedPersonality;
+        else
+            personality = Random32();
 
-    SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
+        SetBoxMonData(boxMon, MON_DATA_PERSONALITY, &personality);
 
-    // Determine original trainer ID
-    if (otIdType == OT_ID_RANDOM_NO_SHINY)
-    {
-        u32 shinyValue;
-        do
+        // Determine original trainer ID
+        if (otIdType == OT_ID_RANDOM_NO_SHINY)
         {
-            // Choose random OT IDs until one that results in a non-shiny Pokémon
-            value = Random32();
-            shinyValue = GET_SHINY_VALUE(value, personality);
-        } while (shinyValue < SHINY_ODDS);
-    }
-    else if (otIdType == OT_ID_PRESET)
-    {
-        value = fixedOtId;
-    }
-    else // Player is the OT
-    {
-        value = gSaveBlock2Ptr->playerTrainerId[0]
-              | (gSaveBlock2Ptr->playerTrainerId[1] << 8)
-              | (gSaveBlock2Ptr->playerTrainerId[2] << 16)
-              | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
+            do
+            {
+                // Choose random OT IDs until one that results in a non-shiny Pokémon
+                value = Random32();
+                shinyValue = GET_SHINY_VALUE(value, personality);
+            } while (shinyValue < SHINY_ODDS);
+            break;
+        }
+        else if (otIdType == OT_ID_PRESET)
+        {
+            value = fixedOtId;
+        }
+        else // Player is the OT
+        {
+            value = gSaveBlock2Ptr->playerTrainerId[0]
+                | (gSaveBlock2Ptr->playerTrainerId[1] << 8)
+                | (gSaveBlock2Ptr->playerTrainerId[2] << 16)
+                | (gSaveBlock2Ptr->playerTrainerId[3] << 24);
+        }
+
+        shinyValue = GET_SHINY_VALUE(value, personality);
+        if (shinyValue < SHINY_ODDS) {
+            break;
+        }
     }
 
     SetBoxMonData(boxMon, MON_DATA_OT_ID, &value);
